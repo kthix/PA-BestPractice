@@ -398,9 +398,11 @@ snippets:
                           <to>
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
+                          {%- for item in SecurityZones  %}
                           <from>
                             <member>{{ V_SecurityZone_LAN }}</member>
                           </from>
+                          {%- endfor %}
                           <source>
                             <member>any</member>
                           </source>
