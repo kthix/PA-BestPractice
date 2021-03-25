@@ -45,11 +45,12 @@ variables:
     default: BP_
     help_text: ''
 -   name: SecurityZones
-    type_hint: list
+    type_hint: checkbox
     description: Choose your security zone for internal network
     default: ''
     help_text: ''
     source: SecurityZones
+    cbx_list: []
 snippets:
 -   name: Tag-OUT-BLCK
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/tag
