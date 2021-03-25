@@ -5,10 +5,11 @@ description: |
 type: panos
 labels:
     collection: Ateam
-variables: config
+variables:[]
 snippets:
   - name: Parse configuration get variables from FW
     cmd: parse
+    variable: config
     #xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone
     outputs:
       - name: SecurityZones
