@@ -12,4 +12,4 @@ snippets:
     variable: config
     outputs:
       - name: SecurityZones
-        capture_list: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone/entry/@name
+        capture_list: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone/entry/
