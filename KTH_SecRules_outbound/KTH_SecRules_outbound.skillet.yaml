@@ -42,6 +42,12 @@ variables:
     type_hint: text
     default: BP_
     help_text: ''
+-   name: SecurityZones
+    type_hint: dropdown
+    description: Choose your security zone for internal network
+    default: ''
+    help_text: ''
+    source: SecurityZones
 snippets:
 -   name: Tag-OUT-BLCK
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/tag
