@@ -1,0 +1,1882 @@
+name: KTH_SecRules_outbound
+label: KTH_SecRules_outbound
+description: Generates Outbound starting configuration for customers coming from legacy
+    firewall
+type: panos
+labels:
+    collection: Unknown
+variables:
+-   name: V_SecurityZone_Internet
+    type_hint: text
+    description: Your internet security zone name
+    default: SK-Internet
+    help_text: ''
+-   name: V_SecurityZone_LAN
+    type_hint: text
+    description: Your from security zone
+    default: LAN
+    help_text: ''
+-   name: V_tag_outboundpolicies
+    description: TAG for outbound polcies that should become block policies
+    type_hint: text
+    default: OUT-block
+    help_text: ''
+-   name: V_tag_highrisksecpolicies
+    description: TAG for high risk security policies outbound
+    type_hint: text
+    default: HighRisk_Policy
+    help_text: ''
+-   name: V_SecProfileGroup_outbound
+    description: Name of the Security profile group to attach (default group from
+        Ironskillet)
+    type_hint: text
+    default: Outbound
+    help_text: ''
+-   name: V_Prefix_AppFilters
+    description: Prefix for application filters
+    type_hint: text
+    default: OUT_
+    help_text: ''
+-   name: V_Prefix_SecRule
+    description: Prefix for the security rules
+    type_hint: text
+    default: BP_
+    help_text: ''
+snippets:
+-   name: Tag-OUT-BLCK
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/tag
+    element: |-
+        <entry name="{{ V_tag_outboundpolicies }}">
+                      <color>color20</color>
+                    </entry>
+    cmd: set
+-   name: TAG-HighRisk
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/tag
+    element: |-
+        <entry name="{{ V_tag_highrisksecpolicies }}">
+                      <color>color1</color>
+                    </entry>
+    cmd: set
+-   name: SecZone-Trust
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
+    element: |-
+        <entry name="{{ V_SecurityZone_LAN }}">
+                      <network>
+                        <layer3/>
+                      </network>
+                    </entry>
+    cmd: set
+-   name: SecZone-Internet
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
+    element: |-
+        <entry name="{{ V_SecurityZone_Internet }}">
+                      <network>
+                        <layer3/>
+                      </network>
+                    </entry>
+    cmd: set
+-   name: AppFilters
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]
+    element: |-
+        <application-filter>
+                    <entry name="{{ V_Prefix_AppFilters }}audio-streaming">
+                      <subcategory>
+                        <member>audio-streaming</member>
+                      </subcategory>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}auth-serv">
+                      <saas-risk>
+                        <member>is-data-breaches</member>
+                      </saas-risk>
+                      <subcategory>
+                        <member>auth-service</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}database">
+                      <subcategory>
+                        <member>database</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}email">
+                      <subcategory>
+                        <member>email</member>
+                      </subcategory>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}encrypttunnel-01">
+                      <subcategory>
+                        <member>encrypted-tunnel</member>
+                      </subcategory>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}encrypttunnel-02">
+                      <subcategory>
+                        <member>encrypted-tunnel</member>
+                      </subcategory>
+                      <exclude>
+                        <member>ssl</member>
+                      </exclude>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}encrypttunnel-03">
+                      <subcategory>
+                        <member>encrypted-tunnel</member>
+                      </subcategory>
+                      <tunnels-other-apps>yes</tunnels-other-apps>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}erp-crm">
+                      <subcategory>
+                        <member>erp-crm</member>
+                      </subcategory>
+                      <saas-certifications>
+                        <member>no-certifications</member>
+                      </saas-certifications>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}file-sharing-01">
+                      <subcategory>
+                        <member>file-sharing</member>
+                      </subcategory>
+                      <exclude>
+                        <member>google-cloud-storage-download</member>
+                        <member>google-cloud-storage-editing</member>
+                        <member>google-cloud-storage-sharing</member>
+                        <member>google-cloud-storage-upload</member>
+                        <member>ms-onedrive-base</member>
+                        <member>ms-onedrive-share</member>
+                      </exclude>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}file-sharing-02">
+                      <subcategory>
+                        <member>file-sharing</member>
+                      </subcategory>
+                      <exclude>
+                        <member>google-drive-web</member>
+                        <member>ms-onedrive-downloading</member>
+                      </exclude>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}gaming">
+                      <subcategory>
+                        <member>gaming</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}general-bus">
+                      <subcategory>
+                        <member>general-business</member>
+                      </subcategory>
+                      <risk>
+                        <member>5</member>
+                      </risk>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}ics-protocols">
+                      <subcategory>
+                        <member>ics-protocols</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}infrastructure">
+                      <subcategory>
+                        <member>infrastructure</member>
+                      </subcategory>
+                      <risk>
+                        <member>3</member>
+                        <member>4</member>
+                      </risk>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}messaging">
+                      <subcategory>
+                        <member>instant-messaging</member>
+                      </subcategory>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}conferencing">
+                      <subcategory>
+                        <member>internet-conferencing</member>
+                      </subcategory>
+                      <risk>
+                        <member>3</member>
+                        <member>4</member>
+                      </risk>
+                      <exclude>
+                        <member>adobe-meeting</member>
+                        <member>adobe-meeting-desktop-sharing</member>
+                        <member>ms-lync-content-sharing</member>
+                        <member>webex-base</member>
+                        <member>webex-desktop-sharing</member>
+                      </exclude>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}internet-utility-01">
+                      <subcategory>
+                        <member>internet-utility</member>
+                      </subcategory>
+                      <risk>
+                        <member>5</member>
+                      </risk>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}internet-utility-02">
+                      <subcategory>
+                        <member>internet-utility</member>
+                      </subcategory>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}IP-protocol">
+                      <subcategory>
+                        <member>ip-protocol</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}management">
+                      <subcategory>
+                        <member>management</member>
+                      </subcategory>
+                      <risk>
+                        <member>3</member>
+                        <member>4</member>
+                      </risk>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}marketing-01">
+                      <subcategory>
+                        <member>marketing</member>
+                      </subcategory>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}marketing-02">
+                      <subcategory>
+                        <member>marketing</member>
+                      </subcategory>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}medical">
+                      <subcategory>
+                        <member>medical</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}office-programs">
+                      <subcategory>
+                        <member>office-programs</member>
+                      </subcategory>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}photo-video-01">
+                      <subcategory>
+                        <member>photo-video</member>
+                      </subcategory>
+                      <exclude>
+                        <member>youtube-base</member>
+                        <member>youtube-safety-mode</member>
+                        <member>youtube-streaming</member>
+                      </exclude>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}photo-video-02">
+                      <subcategory>
+                        <member>photo-video</member>
+                      </subcategory>
+                      <risk>
+                        <member>5</member>
+                      </risk>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}proxy">
+                      <subcategory>
+                        <member>proxy</member>
+                      </subcategory>
+                      <exclude>
+                        <member>zscaler-internet-access</member>
+                      </exclude>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}remote-access">
+                      <subcategory>
+                        <member>remote-access</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}routing">
+                      <subcategory>
+                        <member>routing</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}social-business">
+                      <subcategory>
+                        <member>social-business</member>
+                      </subcategory>
+                      <risk>
+                        <member>3</member>
+                      </risk>
+                      <exclude>
+                        <member>sharepoint-online</member>
+                      </exclude>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}social-networking-01">
+                      <subcategory>
+                        <member>social-networking</member>
+                      </subcategory>
+                      <saas-risk>
+                        <member>is-poor-terms-of-service</member>
+                      </saas-risk>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}social-networking-02">
+                      <subcategory>
+                        <member>social-networking</member>
+                      </subcategory>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}social-networking-03">
+                      <subcategory>
+                        <member>social-networking</member>
+                      </subcategory>
+                      <exclude>
+                        <member>facebook-base</member>
+                        <member>facebook-posting</member>
+                        <member>twitter-base</member>
+                        <member>twitter-editing</member>
+                        <member>twitter-posting</member>
+                        <member>twitter-uploading</member>
+                      </exclude>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}software-devops">
+                      <subcategory>
+                        <member>software-development</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}storage-backup">
+                      <subcategory>
+                        <member>storage-backup</member>
+                      </subcategory>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}voip-video-01">
+                      <subcategory>
+                        <member>voip-video</member>
+                      </subcategory>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}voip-video-02">
+                      <subcategory>
+                        <member>voip-video</member>
+                      </subcategory>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}web-posting-01">
+                      <subcategory>
+                        <member>web-posting</member>
+                      </subcategory>
+                      <prone-to-misuse>yes</prone-to-misuse>
+                    </entry>
+                    <entry name="{{ V_Prefix_AppFilters }}web-posting-02">
+                      <subcategory>
+                        <member>web-posting</member>
+                      </subcategory>
+                      <used-by-malware>yes</used-by-malware>
+                    </entry>
+                  </application-filter>
+    cmd: set
+-   name: SecProfile-OutboundBLCK
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]
+    element: |-
+        <profile-group>
+                    <entry name="{{ V_SecProfileGroup_outbound }}"/>
+                  </profile-group>
+    cmd: set
+-   name: SecRule-AudioStreaming
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}audio-streaming">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}audio-streaming</member>
+                          </application>
+                          <service>
+                            <member>any</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>deny</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-AuthServ
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}auth-serv">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}auth-serv</member>
+                          </application>
+                          <service>
+                            <member>any</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>deny</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Conferencing
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}conferencing">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}conferencing</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Database
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}database">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}database</member>
+                          </application>
+                          <service>
+                            <member>any</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>deny</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Email
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Email">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}email</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-EncryptedTunnel
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}EncryptedTunnel">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}encrypttunnel-01</member>
+                            <member>{{ V_Prefix_AppFilters }}encrypttunnel-02</member>
+                            <member>{{ V_Prefix_AppFilters }}encrypttunnel-03</member>
+                          </application>
+                          <service>
+                            <member>any</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>deny</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-ERP
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}ERP">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}erp-crm</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-FileSharing
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}FileSharing">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}file-sharing-01</member>
+                            <member>{{ V_Prefix_AppFilters }}file-sharing-02</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Gaming
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Gaming">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}gaming</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-GeneralBusiness
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}General-Business">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}general-bus</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-ICS
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}ICS">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}ics-protocols</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Infrastructure
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Infrastructure">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}infrastructure</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-InternetUtility
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Internet-Utility">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}internet-utility-01</member>
+                            <member>{{ V_Prefix_AppFilters }}internet-utility-02</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-IPprotocol
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}IP-protocol">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}IP-protocol</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-ManagementApps
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}management">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}management</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Marketing
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Marketing">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}marketing-01</member>
+                            <member>{{ V_Prefix_AppFilters }}marketing-02</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Medical
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Medical">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}medical</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-MessagingApps
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Messaging">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}messaging</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-OfficeApps
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}OfficePrograms">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}office-programs</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-PhotoVideo
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}PhotoVideo">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}photo-video-01</member>
+                            <member>{{ V_Prefix_AppFilters }}photo-video-02</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-ProxyApps
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Proxy">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}proxy</member>
+                          </application>
+                          <service>
+                            <member>any</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>deny</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-RemoteAccess
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}RemoteAccess">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}remote-access</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Routing
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Routing">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}routing</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-SocialBusiness
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}SocialBusiness">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}social-business</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Social-Networking
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Social-Networking">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}social-networking-01</member>
+                            <member>{{ V_Prefix_AppFilters }}social-networking-02</member>
+                            <member>{{ V_Prefix_AppFilters }}social-networking-03</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-SoftwDevops
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Software-Devops">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}software-devops</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-StorageBackup
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Storage-Backup">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}storage-backup</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-VoIP-Video
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}VoIP-Video">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}voip-video-01</member>
+                            <member>{{ V_Prefix_AppFilters }}voip-video-02</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-WebPosting
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="{{ V_Prefix_SecRule }}Web-Posting">
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>{{ V_Prefix_AppFilters }}web-posting-01</member>
+                            <member>{{ V_Prefix_AppFilters }}web-posting-02</member>
+                          </application>
+                          <service>
+                            <member>application-default</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <tag>
+                            <member>{{ V_tag_outboundpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Legacy-HTTP-HTTPS-unknown
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="Legacy-http-https-unknown">
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>unknown-p2p</member>
+                            <member>unknown-tcp</member>
+                            <member>unknown-udp</member>
+                          </application>
+                          <service>
+                            <member>service-http</member>
+                            <member>service-https</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <tag>
+                            <member>{{ V_tag_highrisksecpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Legacy-HTTP-HTTPS
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="Legacy-http-https">
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>any</member>
+                          </application>
+                          <service>
+                            <member>service-http</member>
+                            <member>service-https</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <tag>
+                            <member>{{ V_tag_highrisksecpolicies }}</member>
+                          </tag>
+                        </entry>
+    cmd: set
+-   name: SecRule-Legacy-unknown-any
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="Legacy-unknown-any">
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>unknown-p2p</member>
+                            <member>unknown-tcp</member>
+                            <member>unknown-udp</member>
+                          </application>
+                          <service>
+                            <member>any</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <tag>
+                            <member>{{ V_tag_highrisksecpolicies }}</member>
+                          </tag>
+                          <disabled>yes</disabled>
+                        </entry>
+    cmd: set
+-   name: SecRule-Legacy-any
+    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
+    element: |-
+        <entry name="Legacy-any">
+                          <profile-setting>
+                            <group>
+                              <member>{{ V_SecProfileGroup_outbound }}</member>
+                            </group>
+                          </profile-setting>
+                          <to>
+                            <member>{{ V_SecurityZone_Internet }}</member>
+                          </to>
+                          <from>
+                            <member>{{ V_SecurityZone_LAN }}</member>
+                          </from>
+                          <source>
+                            <member>any</member>
+                          </source>
+                          <destination>
+                            <member>any</member>
+                          </destination>
+                          <source-user>
+                            <member>any</member>
+                          </source-user>
+                          <category>
+                            <member>any</member>
+                          </category>
+                          <application>
+                            <member>any</member>
+                          </application>
+                          <service>
+                            <member>any</member>
+                          </service>
+                          <source-hip>
+                            <member>any</member>
+                          </source-hip>
+                          <destination-hip>
+                            <member>any</member>
+                          </destination-hip>
+                          <action>allow</action>
+                          <tag>
+                            <member>{{ V_tag_highrisksecpolicies }}</member>
+                          </tag>
+                          <disabled>yes</disabled>
+                        </entry>
+    cmd: set
