@@ -9,7 +9,7 @@ variables: []
 snippets:
   - name: system_object
     cmd: get
-    xpath: config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone
+    xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone
     outputs:
       # You always need to specify what you want to capture from the returned data
       # Using 'capture_object' you can convert the returned XML data (default output_type for panos) into a
