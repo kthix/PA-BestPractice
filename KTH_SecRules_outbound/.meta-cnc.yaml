@@ -4,7 +4,7 @@ description: Generates Outbound starting configuration for customers coming from
     firewall
 type: panos
 labels:
-    collection: main
+    collection: Thix BP
 variables:
 -   name: V_SecurityZone_Internet
     type_hint: text
