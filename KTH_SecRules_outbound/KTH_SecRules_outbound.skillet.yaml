@@ -1,21 +1,23 @@
 name: KTH_SecRules_outbound
 label: KTH_SecRules_outbound
 description: Generates Outbound starting configuration for customers coming from legacy
-    firewall
+    firewall IMPORTANT requires variabel with all security zones as input
 type: panos
 labels:
     collection: Ateam
 variables:
 -   name: V_SecurityZone_Internet
-    type_hint: text
-    description: Your internet security zone name
-    default: SK-Internet
+    type_hint: dropdown
+    description: Select your internet security zone
+    default: null
+    source: SecurityZones
     help_text: ''
 -   name: V_SecurityZone_LAN
-    type_hint: text
-    description: Your from security zone
-    default: LAN
+    type_hint: checkbox
+    description: Choose your security zone for internal network
+    default: ''
     help_text: ''
+    source: SecurityZones
 -   name: V_tag_outboundpolicies
     description: TAG for outbound polcies that should become block policies
     type_hint: text
@@ -42,12 +44,6 @@ variables:
     type_hint: text
     default: BP_
     help_text: ''
--   name: SecurityZones
-    type_hint: dropdown
-    description: Choose your security zone for internal network
-    default: ''
-    help_text: ''
-    dd_list: []
 snippets:
 -   name: Tag-OUT-BLCK
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/tag
@@ -63,28 +59,6 @@ snippets:
     element: |-
         <entry name="{{ V_tag_highrisksecpolicies }}">
                       <color>color1</color>
-                    </entry>
-    cmd: set
-    file: ''
-    template_title: ''
--   name: SecZone-Trust
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
-    element: |-
-        <entry name="{{ V_SecurityZone_LAN }}">
-                      <network>
-                        <layer3/>
-                      </network>
-                    </entry>
-    cmd: set
-    file: ''
-    template_title: ''
--   name: SecZone-Internet
-    xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
-    element: |-
-        <entry name="{{ V_SecurityZone_Internet }}">
-                      <network>
-                        <layer3/>
-                      </network>
                     </entry>
     cmd: set
     file: ''
@@ -403,7 +377,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -450,7 +426,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -497,7 +475,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -544,7 +524,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -591,7 +573,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -638,7 +622,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -687,7 +673,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -734,7 +722,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -782,7 +772,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -829,7 +821,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -876,7 +870,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -923,7 +919,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -970,7 +968,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1018,7 +1018,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1065,7 +1067,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1112,7 +1116,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1160,7 +1166,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1207,7 +1215,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1254,7 +1264,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1301,7 +1313,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1349,7 +1363,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1396,7 +1412,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1443,7 +1461,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1490,7 +1510,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1537,7 +1559,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1586,7 +1610,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1633,7 +1659,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1680,7 +1708,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1728,7 +1758,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1781,7 +1813,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1831,7 +1865,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1879,7 +1915,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
@@ -1929,7 +1967,9 @@ snippets:
                             <member>{{ V_SecurityZone_Internet }}</member>
                           </to>
                           <from>
-                            <member>{{ V_SecurityZone_LAN }}</member>
+                            {%- for item in V_SecurityZone_LAN  %}
+                            <member>{{ item }}</member>
+                            {%- endfor %}
                           </from>
                           <source>
                             <member>any</member>
