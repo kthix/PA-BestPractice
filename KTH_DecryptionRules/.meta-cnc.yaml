@@ -3,7 +3,7 @@ label: KTH_DecryptionRules
 description: Configures proposal for SSL decryption
 type: panos
 labels:
-    collection: Thix BP
+    collection: Ateam
 variables: []
 snippets:
 -   name: SelfSigned-certificate-decryption
@@ -52,6 +52,8 @@ snippets:
                 <private-key>-AQ==XmLqcbiC77xs3BOflri62ClPcUc=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</private-key>
               </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SelfSigned-decryption-untrust
     xpath: /config/shared/certificate
     element: |-
@@ -88,6 +90,8 @@ snippets:
                 <private-key>-AQ==Ps/4im1MLf7gVMN9GCa+ya/ALS0=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</private-key>
               </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: set-certificates-forward-trust-untrust
     xpath: /config/shared
     element: |-
@@ -100,6 +104,8 @@ snippets:
               </forward-untrust-certificate>
             </ssl-decrypt>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: URLcat_HR-shopping
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/profiles/custom-url-category
     element: |-
@@ -111,6 +117,8 @@ snippets:
                         <type>Category Match</type>
                       </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: URLcat_HR-news
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/profiles/custom-url-category
     element: |-
@@ -122,6 +130,8 @@ snippets:
                         <type>Category Match</type>
                       </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: URLcat_HR-webadv
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/profiles/custom-url-category
     element: |-
@@ -133,6 +143,8 @@ snippets:
                         <type>Category Match</type>
                       </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: URLcat_HR-education
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/profiles/custom-url-category
     element: |-
@@ -144,6 +156,8 @@ snippets:
                         <type>Category Match</type>
                       </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: BP_Decryption-Profile
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/profiles
     element: |-
@@ -166,6 +180,8 @@ snippets:
                       </entry>
                     </decryption>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: Rulebase-Decryption
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase
     element: |-
@@ -475,3 +491,5 @@ snippets:
                       </rules>
                     </decryption>
     cmd: set
+    file: ''
+    template_title: ''
