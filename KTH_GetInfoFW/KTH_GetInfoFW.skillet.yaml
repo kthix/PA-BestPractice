@@ -14,4 +14,5 @@ snippets:
     outputs:
       - name: SecurityZones
         # the '.' capture pattern will convert the full output into an object
-        capture_pattern: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone//entry/@name
+         #capture_pattern: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone//entry/@name
+        capture_pattern: /config/devices/entry/vsys/entry/zone//entry/@name
