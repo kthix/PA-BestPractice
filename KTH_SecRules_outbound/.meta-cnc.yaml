@@ -4,7 +4,7 @@ description: Generates Outbound starting configuration for customers coming from
     firewall
 type: panos
 labels:
-    collection: Unknown
+    collection: main
 variables:
 -   name: V_SecurityZone_Internet
     type_hint: text
@@ -50,6 +50,8 @@ snippets:
                       <color>color20</color>
                     </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: TAG-HighRisk
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/tag
     element: |-
@@ -57,6 +59,8 @@ snippets:
                       <color>color1</color>
                     </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecZone-Trust
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
     element: |-
@@ -66,6 +70,8 @@ snippets:
                       </network>
                     </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecZone-Internet
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
     element: |-
@@ -75,6 +81,8 @@ snippets:
                       </network>
                     </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: AppFilters
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]
     element: |-
@@ -370,6 +378,8 @@ snippets:
                     </entry>
                   </application-filter>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecProfile-OutboundBLCK
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]
     element: |-
@@ -377,6 +387,8 @@ snippets:
                     <entry name="{{ V_SecProfileGroup_outbound }}"/>
                   </profile-group>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-AudioStreaming
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -422,6 +434,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-AuthServ
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -467,6 +481,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Conferencing
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -512,6 +528,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Database
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -557,6 +575,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Email
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -602,6 +622,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-EncryptedTunnel
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -649,6 +671,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-ERP
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -694,6 +718,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-FileSharing
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -740,6 +766,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Gaming
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -785,6 +813,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-GeneralBusiness
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -830,6 +860,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-ICS
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -875,6 +907,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Infrastructure
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -920,6 +954,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-InternetUtility
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -966,6 +1002,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-IPprotocol
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1011,6 +1049,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-ManagementApps
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1056,6 +1096,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Marketing
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1102,6 +1144,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Medical
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1147,6 +1191,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-MessagingApps
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1192,6 +1238,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-OfficeApps
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1237,6 +1285,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-PhotoVideo
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1283,6 +1333,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-ProxyApps
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1328,6 +1380,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-RemoteAccess
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1373,6 +1427,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Routing
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1418,6 +1474,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-SocialBusiness
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1463,6 +1521,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Social-Networking
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1510,6 +1570,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-SoftwDevops
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1555,6 +1617,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-StorageBackup
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1600,6 +1664,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-VoIP-Video
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1646,6 +1712,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-WebPosting
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1692,6 +1760,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Legacy-HTTP-HTTPS-unknown
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1740,6 +1810,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Legacy-HTTP-HTTPS
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1786,6 +1858,8 @@ snippets:
                           </tag>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Legacy-unknown-any
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1834,6 +1908,8 @@ snippets:
                           <disabled>yes</disabled>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
 -   name: SecRule-Legacy-any
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/rulebase/security/rules
     element: |-
@@ -1880,3 +1956,5 @@ snippets:
                           <disabled>yes</disabled>
                         </entry>
     cmd: set
+    file: ''
+    template_title: ''
