@@ -1,7 +1,7 @@
 name: KTH_SecRules_outbound
 label: KTH_SecRules_outbound
 description: Generates Outbound starting configuration for customers coming from legacy
-    firewall
+    firewall IMPORTANT requires variabel with all security zones as input
 type: panos
 labels:
     collection: Ateam
@@ -63,28 +63,6 @@ snippets:
     cmd: set
     file: ''
     template_title: ''
-# -   name: SecZone-Trust
-#     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
-#     element: |-
-#         <entry name="{{ V_SecurityZone_LAN }}">
-#                       <network>
-#                         <layer3/>
-#                       </network>
-#                     </entry>
-#     cmd: set
-#     file: ''
-#     template_title: ''
-# -   name: SecZone-Internet
-#     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/zone
-#     element: |-
-#         <entry name="{{ V_SecurityZone_Internet }}">
-#                       <network>
-#                         <layer3/>
-#                       </network>
-#                     </entry>
-#     cmd: set
-#     file: ''
-#     template_title: ''
 -   name: AppFilters
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]
     element: |-
