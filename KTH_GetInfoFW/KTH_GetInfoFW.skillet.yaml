@@ -8,8 +8,9 @@ labels:
 variables:
 snippets:
   - name: Parse configuration get variables from FW
-    cmd: parse
-    variable: config
+    cmd: get
+    xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone
+    output_type: xml
     outputs:
       - name: SecurityZones
-        capture_list: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone/entry/
+        capture_list: ./entry/@name
