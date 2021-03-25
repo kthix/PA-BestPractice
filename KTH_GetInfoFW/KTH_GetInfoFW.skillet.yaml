@@ -1,0 +1,8 @@
+name: KTH_GetInfoFW
+label: KTH_GetInfoFW
+description: "Gets information from firewall to be used in next skillets\r\n"
+type: panos
+labels:
+    collection: Unknown
+variables: []
+snippets: []
