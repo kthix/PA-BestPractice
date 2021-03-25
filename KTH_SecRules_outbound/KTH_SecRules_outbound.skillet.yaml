@@ -7,15 +7,17 @@ labels:
     collection: Ateam
 variables:
 -   name: V_SecurityZone_Internet
-    type_hint: text
+    type_hint: dropdown
     description: Your internet security zone name
-    default: SK-Internet
+    default: null
+    source: SecurityZones
     help_text: ''
 -   name: V_SecurityZone_LAN
-    type_hint: text
+    type_hint: dropdown
     description: Your from security zone
     default: LAN
     help_text: ''
+    source: SecurityZones
 -   name: V_tag_outboundpolicies
     description: TAG for outbound polcies that should become block policies
     type_hint: text
