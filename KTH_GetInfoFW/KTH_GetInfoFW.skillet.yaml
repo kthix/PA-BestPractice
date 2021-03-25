@@ -10,9 +10,8 @@ snippets:
   - name: Parse configuration get variables from FW
     cmd: parse
     variable: config
-    #xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone
+    xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone
     outputs:
       - name: SecurityZones
         # the '.' capture pattern will convert the full output into an object
-         #capture_pattern: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone//entry/@name
-        capture_pattern: /config/devices/entry/vsys/entry/zone//entry/@name
+        capture_pattern: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone//entry/@name
