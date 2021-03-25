@@ -12,5 +12,5 @@ snippets:
     xpath: /config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/zone
     output_type: xml
     outputs:
-      - name: SecurityZonesLIST
+      - name: SecurityZones
         capture_list: ./entry/@name
