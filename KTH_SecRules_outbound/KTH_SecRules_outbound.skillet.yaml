@@ -50,7 +50,6 @@ variables:
     default: ''
     help_text: ''
     source: SecurityZones
-    cbx_list: []
 snippets:
 -   name: Tag-OUT-BLCK
     xpath: /config/devices/entry[@name="localhost.localdomain"]/vsys/entry[@name="vsys1"]/tag
