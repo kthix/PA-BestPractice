@@ -8,18 +8,16 @@ labels:
 variables:
 -   name: V_SecurityZone_Internet
     type_hint: dropdown
-    description: Select your internet zone
-    default: none
+    description: Select your internet security zone
+    default: null
     source: SecurityZones
     help_text: ''
-    dd_list: []
 -   name: V_SecurityZone_LAN
-    type_hint: checkbox
+    type_hint: dropdown
     description: Select your internal security zone
     default: ''
     help_text: ''
     source: SecurityZones
-    cbx_list: []
 -   name: V_tag_outboundpolicies
     description: TAG for outbound polcies that should become block policies
     type_hint: text
